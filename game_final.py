@@ -1,31 +1,21 @@
-"""WIN_COMBINATION = ((0, 1, 2),
-                   (3, 4, 5),
-                   (6, 7, 8),
-                   (0, 3, 6),
-                   (1, 4, 7),
-                   (2, 5, 8),
-                   (0, 4, 8),
-                   (2, 4, 6)
-                   )"""
 #функция выйгрышных комбинаций
-def win_combinations(game_table):
+def win_combinations(game_table, rows):
     diag1 = []
     diag2 = []
-    rows = []
-    cols = []
-    for i in range(game_table):
+    data_rows = []
+    data_cols = []
+    for i in range(rows):
         tmp_row = []
         tmp_col = []
-        for h in range(game_table):
-            tmp_row.append((i,h))
-            tmp_col.append((h,i))
-        rows.append(tmp_row)
-        cols.append(tmp_col)
-        diag1.append((i,i))
-        diag2.append((i,game_table - 1 - i))
+        for h in range(rows):
+            tmp_row.append(i * rows + h)
+            tmp_col.append(i + h * rows)
+        data_rows.append(tmp_row)
+        data_cols.append(tmp_col)
+        diag1.append(i * (rows + 1))
+        diag2.append((rows-1)*(i+1))
 
-    return rows + cols + [diag1] + [diag2]
-
+    return data_rows + data_cols + [diag1] + [diag2]
 
 def draw_table(game_table, rows):
     print("..............")
@@ -66,13 +56,14 @@ def check_winner(game_table, win_combination):
 def game(game_table, player, size, rows):
     counter = 0
     current_player = player
+    win_combination = win_combinations(game_table, rows)
     while counter < size:
         draw_table(game_table, rows)
         cell_to_step = get_input(game_table, current_player)
         counter += 1
         game_table[cell_to_step - 1] = current_player
         if counter > 4:
-            win = check_winner(game_table, WIN_COMBINATION)
+            win = check_winner(game_table, win_combination)
             if win:
                 print(f"Winner! player {current_player}")
                 break
