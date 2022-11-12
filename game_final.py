@@ -1,4 +1,4 @@
-#функция выйгрышных комбинаций
+# функция выйгрышных комбинаций
 def win_combinations(game_table, rows):
     diag1 = []
     diag2 = []
@@ -13,18 +13,34 @@ def win_combinations(game_table, rows):
         data_rows.append(tmp_row)
         data_cols.append(tmp_col)
         diag1.append(i * (rows + 1))
-        diag2.append((rows-1)*(i+1))
+        diag2.append((rows - 1) * (i + 1))
 
     return data_rows + data_cols + [diag1] + [diag2]
 
+
+# Игровое поле
 def draw_table(game_table, rows):
     print("..............")
     for n in range(rows):
-        print("|", " | ".join([str(game_table[j+n*rows]) for j in range(rows)]), "|")
+        print("|", " | ".join([str(game_table[j + n * rows]) for j in range(rows)]), "|")
         print("..............")
 
 
-#ввод данных  игроками
+# Кто ходит первым
+def step() -> object:
+    """
+
+    :rtype: object
+    """
+    first_step: object = input(" Хотите играть крестиками? ")
+    if first_step == 'да':
+        print('Ваш ход X')
+    else:
+        print('Ваш ход O')
+
+
+
+# ввод данных  игроками
 def get_input(game_table, player):
     while True:
         cell_to_step = input(f"Ваш ход {player}: ")
@@ -34,7 +50,7 @@ def get_input(game_table, player):
             print("Некорректный ход, введите число")
             continue
         if 1 <= cell_to_step <= 9:
-            if game_table[cell_to_step-1] not in ("X", "O"):
+            if game_table[cell_to_step - 1] not in ("X", "O"):
                 return cell_to_step
             else:
                 print(" Клетка занята")
@@ -42,7 +58,7 @@ def get_input(game_table, player):
             print(" Неверно. Введите число от 1 до 9")
 
 
-#Проверка победителя
+# Проверка победителя
 def check_winner(game_table, win_combination):
     for each in win_combination:
         win = True
@@ -76,6 +92,7 @@ def game(game_table, player, size, rows):
 def main():
     size = 9
     rows = 3
+    step()
     start_player = "X"
     game_table = list(range(1, size + 1))  # создаём игровое поле
     game(game_table, start_player, size, rows)
@@ -83,3 +100,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
